@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Executive Insights — Choose Your Plan</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/imgs/foodie.ico">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+        <style>
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+            body { min-height: 100vh; font-family: 'DM Sans', sans-serif; background-color: #f0f2f7; color: #131c2e; display: flex; flex-direction: column; }
+            header { background-color: #131c2e; padding: 0 2.5rem; height: 70px; display: flex; align-items: center; border-bottom: 1px solid #1e2a3d; }
+            .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+            .brand-icon { width: 30px; height: 30px; border: 1px solid #7a9cc4; display: flex; align-items: center; justify-content: center; }
+            .brand-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: #d6e4f5; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+            main { flex: 1; max-width: 860px; width: 100%; margin: 3rem auto; padding: 0 2rem; }
+            .step-indicator { display: flex; gap: 6px; margin-bottom: 1.5rem; justify-content: center; }
+            .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #c4d0de; }
+            .step-dot.active { background: #131c2e; }
+            .step-dot.done { background: #4a7aab; }
+            .page-label { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #7a9cc4; margin-bottom: 0.5rem; text-align: center; }
+            .page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: #131c2e; text-align: center; margin-bottom: 0.5rem; }
+            .page-title em { font-style: italic; color: #7a9cc4; }
+            .page-sub { font-size: 14px; color: #7a8a9a; text-align: center; margin-bottom: 3rem; }
+            .plans-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+            .plan-card { background: #fff; border: 1px solid #c4d0de; padding: 2rem 1.5rem; cursor: pointer; position: relative; transition: border-color 0.2s; }
+            .plan-card:hover { border-color: #7a9cc4; }
+            .plan-card.selected { border: 2px solid #131c2e; }
+            .plan-card.selected::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #7a9cc4; }
+            .plan-badge { position: absolute; top: -1px; right: 16px; background: #131c2e; color: #d6e4f5; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; }
+            .discount-badge { position: absolute; top: -1px; left: 16px; background: #2a6e3f; color: #fff; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; }
+            .plan-role { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: #7a9cc4; margin-bottom: 0.4rem; }
+            .plan-name { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #9aaabb; margin-bottom: 0.5rem; }
+            .plan-price { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; color: #131c2e; margin-bottom: 0.2rem; line-height: 1; }
+            .plan-price sup { font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 400; vertical-align: top; margin-top: 6px; display: inline-block; }
+            .plan-period { font-size: 12px; color: #9aaabb; margin-bottom: 1.2rem; }
+            .plan-divider { height: 1px; background: #e8edf4; margin-bottom: 1.2rem; }
+            .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+            .plan-features li { font-size: 13px; color: #4a5a6e; display: flex; align-items: center; gap: 8px; }
+            .plan-features li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #7a9cc4; flex-shrink: 0; }
+            .plan-check { position: absolute; top: 14px; right: 14px; width: 20px; height: 20px; border-radius: 50%; background: #131c2e; display: none; align-items: center; justify-content: center; }
+            .plan-card.selected .plan-check { display: flex; }
+            .order-summary { background: #fff; border: 1px solid #c4d0de; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-bottom: 1rem; }
+            .summary-left { flex: 1; }
+            .summary-label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #9aaabb; margin-bottom: 0.3rem; }
+            .summary-plan { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #131c2e; margin-bottom: 0.2rem; }
+            .summary-desc { font-size: 13px; color: #7a8a9a; }
+            .summary-price { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; color: #131c2e; white-space: nowrap; }
+            .error-msg { background: #fdf0f0; border: 1px solid #e8b4b4; border-left: 3px solid #a32d2d; color: #7a2020; font-size: 13px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: none; }
+            .error-msg.visible { display: block; }
+            .checkout-btn { width: 100%; padding: 1rem; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #f0f2f7; background: #131c2e; border: none; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+            .checkout-btn:hover:not(:disabled) { background: #4a7aab; }
+            .checkout-btn:disabled { background: #c4d0de; cursor: not-allowed; }
+            .stripe-note { text-align: center; font-size: 11px; color: #9aaabb; margin-top: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+            footer { background-color: #131c2e; border-top: 1px solid #1e2a3d; padding: 1.5rem 2.5rem; text-align: center; font-size: 12px; color: #3d4f66; }
+            @media (max-width: 640px) { .plans-grid { grid-template-columns: 1fr; } }
+        </style>
+    </head>
+    <body>
+        <header>
+            <a class="brand" href="/">
+                <div class="brand-icon">
+                    <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                        <rect x="1" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="1" y="10" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="10" width="7" height="7" fill="#7a9cc4"/>
+                    </svg>
+                </div>
+                <span class="brand-name">Executive Insights</span>
+            </a>
+        </header>
+
+        <main>
+            <div class="step-indicator">
+                <div class="step-dot done"></div>
+                <div class="step-dot done"></div>
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+            </div>
+
+            <div class="page-label">Step 3 of 4 — Choose your plan</div>
+            <div class="page-title">Select your <em>membership</em></div>
+            <p class="page-sub">Contributors get a discount for sharing their expertise with the community.</p>
+
+            <div class="plans-grid">
+
+                <!-- Subscriber Monthly -->
+                <div class="plan-card" data-plan="sub_monthly" data-price="9.99" data-role="SUBSCRIBER" onclick="selectPlan(this)">
+                    <div class="plan-check">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                            <path d="M2 5L4.5 7.5L8 3" stroke="#d6e4f5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="plan-role">Subscriber</div>
+                    <div class="plan-name">Monthly</div>
+                    <div class="plan-price"><sup>£</sup>9.99</div>
+                    <div class="plan-period">per month</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>Read all executive posts</li>
+                        <li>Cancel anytime</li>
+                        <li>Full archive access</li>
+                    </ul>
+                </div>
+
+                <!-- Subscriber Annual -->
+                <div class="plan-card" data-plan="sub_annual" data-price="79.99" data-role="SUBSCRIBER" onclick="selectPlan(this)">
+                    <div class="plan-badge">Best value</div>
+                    <div class="plan-check">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                            <path d="M2 5L4.5 7.5L8 3" stroke="#d6e4f5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="plan-role">Subscriber</div>
+                    <div class="plan-name">Annual</div>
+                    <div class="plan-price"><sup>£</sup>79.99</div>
+                    <div class="plan-period">per year · save 33%</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>Read all executive posts</li>
+                        <li>Full archive access</li>
+                        <li>Priority support</li>
+                    </ul>
+                </div>
+
+                <!-- Contributor Monthly -->
+                <div class="plan-card" data-plan="contrib_monthly" data-price="4.99" data-role="CONTRIBUTOR" onclick="selectPlan(this)">
+                    <div class="discount-badge">Contributor discount</div>
+                    <div class="plan-check">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                            <path d="M2 5L4.5 7.5L8 3" stroke="#d6e4f5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="plan-role" style="color:#2a6e3f;">Contributor</div>
+                    <div class="plan-name">Monthly</div>
+                    <div class="plan-price"><sup>£</sup>4.99</div>
+                    <div class="plan-period">per month</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>Read + write posts</li>
+                        <li>50% contributor discount</li>
+                        <li>Cancel anytime</li>
+                    </ul>
+                </div>
+
+                <!-- Contributor Annual -->
+                <div class="plan-card" data-plan="contrib_annual" data-price="39.99" data-role="CONTRIBUTOR" onclick="selectPlan(this)">
+                    <div class="discount-badge">Contributor discount</div>
+                    <div class="plan-check">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                            <path d="M2 5L4.5 7.5L8 3" stroke="#d6e4f5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="plan-role" style="color:#2a6e3f;">Contributor</div>
+                    <div class="plan-name">Annual</div>
+                    <div class="plan-price"><sup>£</sup>39.99</div>
+                    <div class="plan-period">per year · save 33%</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>Read + write posts</li>
+                        <li>50% contributor discount</li>
+                        <li>Best value</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-left">
+                    <div class="summary-label">Selected plan</div>
+                    <div class="summary-plan" id="summaryPlan">No plan selected</div>
+                    <div class="summary-desc" id="summaryDesc">Please select a plan above to continue.</div>
+                </div>
+                <div class="summary-price" id="summaryPrice">—</div>
+            </div>
+
+            <div class="error-msg" id="errorMsg"></div>
+
+            <button class="checkout-btn" id="checkoutBtn" disabled onclick="startCheckout()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="1" y="4" width="14" height="10" rx="1" stroke="#f0f2f7" stroke-width="1.2"/>
+                    <path d="M1 7h14" stroke="#f0f2f7" stroke-width="1.2"/>
+                </svg>
+                Proceed to Secure Checkout
+            </button>
+
+            <div class="stripe-note">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <rect x="1" y="5" width="10" height="7" rx="1" stroke="#9aaabb" stroke-width="1"/>
+                    <path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="#9aaabb" stroke-width="1"/>
+                </svg>
+                Payments processed securely by Stripe. We never store your card details.
+            </div>
+        </main>
+
+        <footer>&copy; Executive Insights. All rights reserved.</footer>
+
+        <script>
+            let selectedPlan = null;
+
+            const planLabels = {
+                sub_monthly:    'Subscriber — Monthly',
+                sub_annual:     'Subscriber — Annual',
+                contrib_monthly:'Contributor — Monthly',
+                contrib_annual: 'Contributor — Annual'
+            };
+
+            const planDescs = {
+                sub_monthly:    'Billed monthly — read all posts, cancel anytime.',
+                sub_annual:     'Billed annually — best value for subscribers.',
+                contrib_monthly:'Billed monthly — read and write posts, contributor discount.',
+                contrib_annual: 'Billed annually — best value for contributors.'
+            };
+
+            function selectPlan(card) {
+                document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedPlan = card.dataset.plan;
+                document.getElementById('summaryPlan').textContent  = planLabels[selectedPlan];
+                document.getElementById('summaryDesc').textContent  = planDescs[selectedPlan];
+                document.getElementById('summaryPrice').textContent = '£' + card.dataset.price;
+                document.getElementById('checkoutBtn').disabled     = false;
+                document.getElementById('errorMsg').classList.remove('visible');
+            }
+
+            async function startCheckout() {
+                if (!selectedPlan) return;
+                const btn = document.getElementById('checkoutBtn');
+                btn.disabled    = true;
+                btn.textContent = 'Redirecting to Stripe...';
+                document.getElementById('errorMsg').classList.remove('visible');
+                try {
+                    const res  = await fetch('/register-checkout', {
+                        method:  'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body:    JSON.stringify({ plan: selectedPlan })
+                    });
+                    const data = await res.json();
+                    if (data.url) {
+                        window.location.href = data.url;
+                    } else {
+                        throw new Error(data.error || 'Something went wrong.');
+                    }
+                } catch (err) {
+                    const errorEl       = document.getElementById('errorMsg');
+                    errorEl.textContent = err.message;
+                    errorEl.classList.add('visible');
+                    btn.disabled    = false;
+                    btn.textContent = 'Proceed to Secure Checkout';
+                }
+            }
+        </script>
+    </body>
+</html>

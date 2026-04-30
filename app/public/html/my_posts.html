@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Executive Insights — My Posts</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="../imgs/foodie.ico">
+        <link rel="stylesheet" href="../css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="../js/my_posts.js" defer></script>
+        <script src="../js/main.js" defer></script>
+        <style>
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+            body {
+                min-height: 100vh;
+                font-family: 'DM Sans', sans-serif;
+                background-color: #f0f2f7;
+                color: #131c2e;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* ── Header ── */
+            header {
+                background-color: #131c2e;
+                padding: 0 2.5rem;
+                height: 70px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                border-bottom: 1px solid #1e2a3d;
+            }
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                text-decoration: none;
+            }
+
+            .brand-icon {
+                width: 30px; height: 30px;
+                border: 1px solid #7a9cc4;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .brand-name {
+                font-family: 'Playfair Display', serif;
+                font-size: 15px;
+                font-weight: 600;
+                color: #d6e4f5;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+
+            /* ── Dropdown ── */
+            .dropdown { position: relative; }
+
+            #login_link {
+                background: transparent;
+                border: 1px solid #2a3a52;
+                color: #d6e4f5;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                font-weight: 400;
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                transition: border-color 0.2s, background 0.2s;
+            }
+
+            #login_link:hover { border-color: #7a9cc4; background: #1a2438; }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: calc(100% + 8px);
+                background: #fff;
+                border: 1px solid #c4d0de;
+                min-width: 160px;
+                z-index: 200;
+            }
+
+            .dropdown:hover .dropdown-content { display: block; }
+
+            .dropdown-content a {
+                display: block;
+                padding: 0.7rem 1rem;
+                font-size: 13px;
+                color: #131c2e;
+                text-decoration: none;
+                transition: background 0.15s;
+            }
+
+            .dropdown-content a:hover { background: #f0f2f7; color: #4a7aab; }
+
+            /* ── Nav ── */
+            nav {
+                background-color: #1a2438;
+                border-bottom: 1px solid #243150;
+            }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                padding: 0 2.5rem;
+                margin: 0;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 1rem 1.2rem;
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: #7a8a9a;
+                text-decoration: none;
+                transition: color 0.2s;
+                border-bottom: 2px solid transparent;
+            }
+
+            nav ul li a:hover { color: #d6e4f5; }
+
+            nav ul li.active a {
+                color: #d6e4f5;
+                border-bottom: 2px solid #7a9cc4;
+            }
+
+            /* ── Main layout ── */
+            main {
+                flex: 1;
+                max-width: 900px;
+                width: 100%;
+                margin: 2.5rem auto;
+                padding: 0 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            /* ── Compose panel ── */
+            .compose-panel {
+                background-color: #131c2e;
+                padding: 2rem 2.5rem;
+            }
+
+            .compose-panel h2 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.3rem;
+                font-weight: 400;
+                color: #d6e4f5;
+                margin-bottom: 0.3rem;
+            }
+
+            .compose-panel > p {
+                font-size: 13px;
+                color: #5a6a82;
+                margin-bottom: 1.5rem;
+            }
+
+            /* ── Post form ── */
+            #postForm { display: block; }
+
+            fieldset {
+                border: 1px solid #2a3a52;
+                padding: 1.5rem;
+            }
+
+            legend {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: #7a9cc4;
+                padding: 0 0.5rem;
+            }
+
+            #postForm label {
+                display: block;
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: #5a6a82;
+                margin: 1rem 0 0.4rem;
+            }
+
+            #postForm label:first-of-type { margin-top: 0.5rem; }
+
+            #postForm input[type="text"],
+            #postForm textarea {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 14px;
+                color: #d6e4f5;
+                background: #1a2438;
+                border: 1px solid #2a3a52;
+                outline: none;
+                transition: border-color 0.2s;
+                border-radius: 0;
+                display: block;
+            }
+
+            #postForm input[type="text"]:focus,
+            #postForm textarea:focus { border-color: #7a9cc4; }
+
+            #postForm input[type="text"]::placeholder,
+            #postForm textarea::placeholder { color: #3d4f66; }
+
+            #postForm textarea {
+                resize: vertical;
+                min-height: 160px;
+                font-family: 'DM Sans', sans-serif;
+            }
+
+            #post_button {
+                margin-top: 1.2rem;
+                padding: 0.75rem 2rem;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: #131c2e;
+                background: #7a9cc4;
+                border: none;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            #post_button:hover { background: #d6e4f5; }
+
+            /* ── My posts panel ── */
+            .posts-panel {
+                background: #fff;
+                border: 1px solid #c4d0de;
+                padding: 2rem 2.5rem;
+            }
+
+            .posts-panel-header {
+                margin-bottom: 1.2rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #e8edf4;
+            }
+
+            .posts-panel-header h2 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: #131c2e;
+                margin-bottom: 0.3rem;
+            }
+
+            .posts-panel-header p {
+                font-size: 13px;
+                color: #7a8a9a;
+            }
+
+            /* ── Search bar ── */
+            .search-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 1.5rem;
+            }
+
+            .search-row .fa-search {
+                font-size: 15px;
+                color: #7a9cc4;
+            }
+
+            .search_bar {
+                flex: 1;
+                padding: 0.65rem 1rem;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 14px;
+                color: #131c2e;
+                background: #f0f2f7;
+                border: 1px solid #c4d0de;
+                outline: none;
+                transition: border-color 0.2s;
+                border-radius: 0;
+                height: auto;
+                width: auto;
+                display: inline-block;
+            }
+
+            .search_bar:focus { border-color: #4a7aab; }
+            .search_bar::placeholder { color: #9aaabb; }
+
+            /* ── Post cards ── */
+            .post {
+                border-bottom: 1px solid #e8edf4;
+                padding: 1.2rem 0;
+            }
+
+            .post:last-child { border-bottom: none; }
+
+            .post h3 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #131c2e;
+                margin-bottom: 0.3rem;
+            }
+
+            .post h5 {
+                font-size: 12px;
+                font-weight: 400;
+                color: #7a9cc4;
+                margin-bottom: 0.6rem;
+                font-style: normal;
+            }
+
+            .post p {
+                font-size: 14px;
+                color: #4a5a6e;
+                line-height: 1.6;
+                margin-bottom: 0.8rem;
+            }
+
+            /* ── Post action buttons ── */
+            .btnContainer { display: flex; gap: 8px; }
+
+            .btnContainer button,
+            .btnContainer a {
+                padding: 0.45rem 1rem;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
+                transition: background 0.2s;
+            }
+
+            .edit-btn {
+                background: #e8edf4;
+                color: #131c2e;
+            }
+
+            .edit-btn:hover { background: #c4d0de; }
+
+            .delete-btn {
+                background: #f5e8e8;
+                color: #a32d2d;
+            }
+
+            .delete-btn:hover { background: #f0c4c4; }
+
+            /* ── Footer ── */
+            footer {
+                background-color: #131c2e;
+                border-top: 1px solid #1e2a3d;
+                padding: 1.5rem 2.5rem;
+                text-align: center;
+                font-size: 12px;
+                color: #3d4f66;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Header -->
+        <header>
+            <a class="header-left" href="../html/index.html">
+                <div class="brand-icon">
+                    <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                        <rect x="1" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="1" y="10" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="10" width="7" height="7" fill="#7a9cc4"/>
+                    </svg>
+                </div>
+                <span class="brand-name">Executive Insights</span>
+            </a>
+
+            <div class="dropdown">
+                <button id="login_link">Username
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <path d="M2 3.5L5 6.5L8 3.5" stroke="#7a9cc4" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <div class="dropdown-content">
+                    <a id="logout_btn" href="../html/login.html">Sign out</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Nav -->
+        <nav>
+            <ul>
+                <li><a href="../html/index.html">Home</a></li>
+                <li><a href="../html/posts.html">Latest Posts</a></li>
+                <li class="active"><a href="../html/my_posts.html">My Posts</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main content -->
+        <main>
+
+            <!-- Compose post -->
+            <div class="compose-panel">
+                <h2>Share your insight</h2>
+                <p>Contribute your perspective to the executive feed.</p>
+
+                <form action="/makepost" method="post" id="postForm" name="postForm" novalidate>
+                    <fieldset>
+                        <legend>Compose a Post</legend>
+
+                        <label for="title_field">Post Title</label>
+                        <input
+                            id="title_field"
+                            name="title_field"
+                            type="text"
+                            placeholder="Enter a title..."
+                            maxlength="150"
+                            required
+                        >
+
+                        <label for="content_field">Post Content</label>
+                        <textarea
+                            id="content_field"
+                            name="content_field"
+                            placeholder="Write your thoughts here..."
+                            maxlength="5000"
+                            required
+                        ></textarea>
+
+                        <!-- Hidden post ID for edit mode -->
+                        <input id="postId" name="postId" type="hidden">
+
+                        <button type="submit" id="post_button">Publish Post</button>
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- My posts list -->
+            <div class="posts-panel">
+                <div class="posts-panel-header">
+                    <h2>Your Posts</h2>
+                    <p>See all the posts you have made so far.</p>
+                </div>
+
+                <div class="search-row">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input
+                        class="search_bar"
+                        id="search"
+                        name="search"
+                        type="text"
+                        placeholder="Search your posts..."
+                        maxlength="100"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <!-- Posts injected here by my_posts.js -->
+                <div id="myPosts"></div>
+            </div>
+
+        </main>
+
+        <footer>
+            &copy; Executive Insights. All rights reserved.
+        </footer>
+
+    </body>
+</html>

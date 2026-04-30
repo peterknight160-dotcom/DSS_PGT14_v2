@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Insights — Registration Verification</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/foodie.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            background-color: #131c2e;
+            display: flex;
+            align-items: stretch;
+        }
+
+        /* ── Left panel ── */
+        .left-panel {
+            flex: 1;
+            background-color: #131c2e;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -80px; left: -80px;
+            width: 340px; height: 340px;
+            border-radius: 50%;
+            background: rgba(100,140,200,0.07);
+        }
+
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            bottom: 60px; right: -60px;
+            width: 240px; height: 240px;
+            border-radius: 50%;
+            background: rgba(100,140,200,0.04);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1;
+        }
+
+        .brand-icon {
+            width: 36px; height: 36px;
+            border: 1px solid #7a9cc4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #d6e4f5;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .left-content { z-index: 1; }
+
+        .left-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: #d6e4f5;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .left-content h1 em { font-style: italic; color: #7a9cc4; }
+
+        .left-content p {
+            font-size: 15px;
+            font-weight: 300;
+            color: #5a6a82;
+            line-height: 1.7;
+            max-width: 340px;
+        }
+
+        .security-note {
+            z-index: 1;
+            border-top: 1px solid #1e2a3d;
+            padding-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .security-icon {
+            width: 32px; height: 32px;
+            border: 1px solid #2a3a52;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .security-text {
+            font-size: 12px;
+            color: #3d4f66;
+            line-height: 1.6;
+        }
+
+        .security-text strong {
+            display: block;
+            color: #5a6a82;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        /* ── Right panel ── */
+        .right-panel {
+            width: 560px;
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3.5rem;
+            position: relative;
+        }
+
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, #b0c4de 30%, #b0c4de 70%, transparent);
+        }
+
+        /* Step indicator */
+        .step-indicator {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #c4d0de; }
+        .step-dot.active { background: #131c2e; }
+        .step-dot.done   { background: #4a7aab; }
+
+        .panel-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #4a7aab;
+            margin-bottom: 0.6rem;
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #131c2e;
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-sub {
+            font-size: 14px;
+            color: #8a8580;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        /* Image box */
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+            border: 1px solid #c4d0de;
+            cursor: crosshair;
+            margin-bottom: 1rem;
+            user-select: none;
+        }
+
+        .image-wrapper img {
+            display: block;
+            width: 485px;
+            height: 485px;
+            max-width: 100%;
+        }
+
+        /* Hint text */
+        #click_hint {
+            font-size: 13px;
+            color: #7a8a9a;
+            text-align: center;
+            min-height: 20px;
+            transition: color 0.2s;
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            font-size: 11px;
+            color: #9aaabb;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        @media (max-width: 860px) {
+            .left-panel { display: none; }
+            .right-panel { width: 100%; padding: 2rem 1.5rem; }
+            .right-panel::before { display: none; }
+            .image-wrapper img { width: 100%; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left panel -->
+    <div class="left-panel">
+        <div class="brand">
+            <div class="brand-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <rect x="1" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                    <rect x="10" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                    <rect x="1" y="10" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                    <rect x="10" y="10" width="7" height="7" fill="#7a9cc4"/>
+                </svg>
+            </div>
+            <span class="brand-name">Executive Insights</span>
+        </div>
+
+        <div class="left-content">
+            <h1>Verify your<br><em>identity.</em></h1>
+            <p>This graphical challenge is your second factor of authentication — something only you know.</p>
+        </div>
+
+        <div class="security-note">
+            <div class="security-item">
+                <div class="security-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <rect x="1" y="5" width="12" height="8" rx="1" stroke="#7a9cc4" stroke-width="1"/>
+                        <path d="M4 5V3.5a3 3 0 016 0V5" stroke="#7a9cc4" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="security-text">
+                    <strong>Two-factor authentication</strong>
+                    Your password was the first factor. This image click is the second.
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <circle cx="7" cy="7" r="6" stroke="#7a9cc4" stroke-width="1"/>
+                        <path d="M7 4v3.5l2 1.5" stroke="#7a9cc4" stroke-width="1" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="security-text">
+                    <strong>Session protected</strong>
+                    You cannot access this page without completing the first step.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="right-panel">
+        <!-- Step indicator — dots update based on login (2 steps done) or register (2 steps done) -->
+        <div class="step-indicator" id="stepIndicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+
+        <div class="panel-label" id="stepLabel">Step 2 — Graphical verification</div>
+        <div class="panel-title">Press your<br>secret number</div>
+        <div class="panel-sub">Click the number you chose when you registered.</div>
+
+        <div class="image-wrapper" id="box" data-endpoint="/register-click">
+            <img src="/imgs/plain.jpg" alt="Number grid" id="number_box">
+        </div>
+
+        <div id="click_hint">Click your secret number in the grid above.</div>
+
+        <div class="footer-note">
+            If you have forgotten your number, contact IT support.
+        </div>
+    </div>
+
+    <script src="/js/graphic.js"></script>
+    <script>
+        // Registration graphic — always uses /register-click endpoint
+        document.getElementById('stepLabel').textContent = 'Step 2 of 4 — Graphical verification';
+        // Initialise the click handler
+        click_box();
+    </script>
+
+</body>
+</html>

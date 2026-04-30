@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Executive Insights — Login</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="../imgs/foodie.ico">
+        <link rel="stylesheet" href="../css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+        <script src="../js/login.js" defer></script>
+        <style>
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+            body {
+                min-height: 100vh;
+                font-family: 'DM Sans', sans-serif;
+                background-color: #131c2e;
+                display: flex;
+                align-items: stretch;
+            }
+
+            /* ── Left panel ── */
+            .left-panel {
+                flex: 1;
+                background-color: #131c2e;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 3rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .left-panel::before {
+                content: '';
+                position: absolute;
+                top: -80px; left: -80px;
+                width: 340px; height: 340px;
+                border-radius: 50%;
+                background: rgba(100, 140, 200, 0.07);
+            }
+
+            .left-panel::after {
+                content: '';
+                position: absolute;
+                bottom: 60px; right: -60px;
+                width: 240px; height: 240px;
+                border-radius: 50%;
+                background: rgba(100, 140, 200, 0.04);
+            }
+
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 1;
+            }
+
+            .brand-icon {
+                width: 36px; height: 36px;
+                border: 1px solid #7a9cc4;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .brand-name {
+                font-family: 'Playfair Display', serif;
+                font-size: 16px;
+                font-weight: 600;
+                color: #d6e4f5;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+
+            .left-content { z-index: 1; }
+
+            .left-content h1 {
+                font-family: 'Playfair Display', serif;
+                font-size: clamp(2rem, 4vw, 3.2rem);
+                font-weight: 400;
+                color: #d6e4f5;
+                line-height: 1.2;
+                margin-bottom: 1.5rem;
+            }
+
+            .left-content h1 em {
+                font-style: italic;
+                color: #7a9cc4;
+            }
+
+            .left-content p {
+                font-size: 15px;
+                font-weight: 300;
+                color: #5a6a82;
+                line-height: 1.7;
+                max-width: 340px;
+            }
+
+            .quotes-strip {
+                z-index: 1;
+                border-top: 1px solid #1e2a3d;
+                padding-top: 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.2rem;
+            }
+
+            .quote-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .quote-avatar {
+                width: 36px; height: 36px;
+                border-radius: 50%;
+                background: #1a2438;
+                border: 1px solid #2a3a52;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: 500;
+                color: #7a9cc4;
+                flex-shrink: 0;
+                letter-spacing: 0.05em;
+            }
+
+            .quote-text {
+                font-size: 12px;
+                color: #3d4f66;
+                font-style: italic;
+                line-height: 1.5;
+            }
+
+            .quote-author {
+                font-size: 11px;
+                color: #7a9cc4;
+                margin-top: 2px;
+            }
+
+            /* ── Right panel ── */
+            .right-panel {
+                width: 480px;
+                background-color: #f4f6f9;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 4rem 3.5rem;
+                position: relative;
+            }
+
+            .right-panel::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0;
+                width: 1px; height: 100%;
+                background: linear-gradient(to bottom, transparent, #b0c4de 30%, #b0c4de 70%, transparent);
+            }
+
+            .login-label {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: #4a7aab;
+                margin-bottom: 0.6rem;
+            }
+
+            .login-title {
+                font-family: 'Playfair Display', serif;
+                font-size: 2rem;
+                font-weight: 600;
+                color: #131c2e;
+                margin-bottom: 0.5rem;
+            }
+
+            .login-sub {
+                font-size: 14px;
+                color: #7a8a9a;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+            }
+
+            /* ── Error alert banner ── */
+            .error-banner {
+                background: #fdf0f0;
+                border: 1px solid #e8b4b4;
+                border-left: 3px solid #a32d2d;
+                padding: 0.85rem 1rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .error-banner-icon {
+                width: 16px; height: 16px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .error-banner-text {
+                font-size: 13px;
+                color: #7a2020;
+                line-height: 1.5;
+            }
+
+            .error-banner-text strong {
+                display: block;
+                font-weight: 500;
+                margin-bottom: 2px;
+                color: #5a1818;
+            }
+
+            /* ── Form fields ── */
+            .field { margin-bottom: 1.4rem; }
+
+            .field label {
+                display: block;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: #4a5a6e;
+                margin-bottom: 0.5rem;
+            }
+
+            .field input {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 14px;
+                color: #131c2e;
+                background: #fff;
+                border: 1px solid #c4d0de;
+                outline: none;
+                transition: border-color 0.2s;
+                border-radius: 0;
+            }
+
+            .field input:focus { border-color: #4a7aab; }
+            .field input::placeholder { color: #b0bcc8; }
+
+            /* ── Submit button ── */
+            .submit-btn {
+                width: 100%;
+                padding: 0.9rem;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: #f4f6f9;
+                background: #131c2e;
+                border: none;
+                cursor: pointer;
+                transition: background 0.2s;
+                margin-top: 0.4rem;
+            }
+
+            .submit-btn:hover { background: #4a7aab; }
+
+            .footer-note {
+                margin-top: 2.5rem;
+                font-size: 11px;
+                color: #9aaabb;
+                line-height: 1.6;
+            }
+
+            /* ── Responsive ── */
+            @media (max-width: 760px) {
+                .left-panel { display: none; }
+                .right-panel { width: 100%; padding: 3rem 2rem; }
+                .right-panel::before { display: none; }
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Left decorative panel -->
+        <div class="left-panel">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <rect x="1" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="1" y="10" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="10" width="7" height="7" fill="#7a9cc4"/>
+                    </svg>
+                </div>
+                <span class="brand-name">Executive Insights</span>
+            </div>
+
+            <div class="left-content">
+                <h1>Where leadership<br>meets <em>perspective.</em></h1>
+                <p>A private platform for our executives to share strategic thinking, industry analysis, and organisational vision.</p>
+            </div>
+
+            <div class="quotes-strip">
+                <div class="quote-item">
+                    <div class="quote-avatar">JH</div>
+                    <div>
+                        <div class="quote-text">"The best decisions come from the clearest thinking."</div>
+                        <div class="quote-author">James Hartley · Chief Executive</div>
+                    </div>
+                </div>
+                <div class="quote-item">
+                    <div class="quote-avatar">SR</div>
+                    <div>
+                        <div class="quote-text">"Sharing knowledge is how we multiply our impact."</div>
+                        <div class="quote-author">Sophie Reid · Chief Strategy Officer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right login panel -->
+        <div class="right-panel">
+            <div class="login-label">Member access</div>
+            <div class="login-title">Sign in failed</div>
+            <div class="login-sub">Please try again below.</div>
+
+            <!-- Error banner — generic message, never reveals which field was wrong -->
+            <div class="error-banner" role="alert">
+                <svg class="error-banner-icon" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="7" stroke="#a32d2d" stroke-width="1.5"/>
+                    <path d="M8 4.5V8.5" stroke="#a32d2d" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="8" cy="11" r="0.75" fill="#a32d2d"/>
+                </svg>
+                <div class="error-banner-text">
+                    <strong>Invalid username or password.</strong>
+                    Please check your credentials and try again.
+                </div>
+            </div>
+
+            <form method="post" action="/" id="login_form" autocomplete="off" novalidate>
+
+                <!-- CSRF token: uncomment when csrf protection is added to app.js -->
+                <!-- <input type="hidden" name="_csrf" value="<%= csrfToken %>"> -->
+
+                <div class="field">
+                    <label for="username_input">Username</label>
+                    <input
+                        type="text"
+                        id="username_input"
+                        name="username_input"
+                        placeholder="Enter your username"
+                        maxlength="50"
+                        required
+                        spellcheck="false"
+                        autocorrect="off"
+                        autocapitalize="none"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="password_input">Password</label>
+                    <input
+                        type="password"
+                        id="password_input"
+                        name="password_input"
+                        placeholder="••••••••"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <button type="submit" id="login_btn" class="submit-btn">Try again</button>
+            </form>
+
+            <div class="footer-note">
+                Access is restricted to authorised personnel only.<br>
+                Contact IT support if you are experiencing issues signing in.
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,365 @@
+/* ============================================================
+   GLOBAL RESET — applies everywhere including login page
+   ============================================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   SITE-WIDE STYLES — scoped to .site-page only
+   These will NOT affect the login page.
+   Add class="site-page" to <body> on every page EXCEPT login.
+   ============================================================ */
+
+.site-page {
+    background-color: #f6f7ef;
+    color: black;
+    font-family: sans-serif, Arial;
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+.site-page header {
+    background-color: rgb(255, 73, 0);
+    text-align: center;
+    height: 150px;
+    color: #000000;
+}
+
+.site-page header > h1 {
+    font-size: 28pt;
+    display: inline-block;
+    line-height: 200%;
+    padding: 25px;
+}
+
+.site-page #logo {
+    width: 150px;
+    height: 150px;
+    float: left;
+}
+
+.site-page #login_link {
+    color: black;
+    background-color: #eda079;
+    padding: 7px;
+    min-width: 100px;
+    border-radius: 3px;
+    border: 2px solid #9e3603;
+    text-transform: uppercase;
+    font-weight: bold;
+    float: left;
+    text-align: center;
+    margin: 30px 10px;
+    transition: background 300ms ease-in-out;
+}
+
+.site-page .link_btn {
+    color: black;
+    background-color: #f56d36;
+    padding: 7px;
+    min-width: 100px;
+    border-radius: 3px;
+    border: 2px solid #c74402;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 10px;
+    cursor: pointer;
+    transition: background 300ms ease-in-out;
+    text-decoration: none;
+}
+
+.site-page .link_btn:hover {
+    background-color: #f2875c;
+}
+
+.site-page .error {
+    color: red;
+}
+
+.site-page #login_form {
+    font-size: 20px;
+}
+
+.site-page #login_btn {
+    width: 100px;
+    color: black;
+    background-color: #eda079;
+    font-size: 18px;
+    font-weight: bold;
+    border: black solid 1px;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background 300ms ease-in-out;
+}
+
+.site-page #login_btn:hover {
+    background-color: #f2875c;
+}
+
+.site-page label {
+    font-weight: bold;
+}
+
+.site-page input {
+    width: 200px;
+    height: 25px;
+    display: block;
+    font-size: 14px;
+}
+
+.site-page nav ul {
+    list-style-type: none;
+}
+
+.site-page nav ul li a {
+    text-decoration: none;
+    padding: 5px;
+}
+
+.site-page a:link {
+    color: black;
+}
+
+.site-page a:visited {
+    color: black;
+}
+
+.site-page nav ul li a:hover {
+    color: #fff;
+    background-color: #d2a868;
+}
+
+.site-page nav {
+    text-align: center;
+    padding: 8px;
+}
+
+.site-page nav ul li {
+    display: inline;
+    padding: 25px;
+}
+
+.site-page .active a {
+    border-bottom: 3px solid #32312f;
+}
+
+.site-page main {
+    margin: 10px 20%;
+    padding: 16px;
+    border: 2px solid #e6b4a1;
+    border-radius: 20px;
+    font-size: 18px;
+}
+
+.site-page section {
+    padding: 20px 0px;
+    margin: 10px auto;
+    background-color: #f7a98b;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 5px;
+    text-align: center;
+}
+
+/* ── User menu / dropdown ── */
+.site-page .user_menu {
+    overflow: hidden;
+    background-color: #333;
+    font-family: Arial;
+}
+
+.site-page .user_menu a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.site-page .dropdown {
+    float: right;
+    margin: 30px 10px;
+    overflow: hidden;
+}
+
+.site-page .dropdown #login_link {
+    padding: 14px 16px;
+    font-family: inherit;
+    margin: 0;
+}
+
+.site-page .user_menu a:hover,
+.site-page .dropdown:hover #login_link {
+    background-color: #f2875c;
+}
+
+.site-page .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    background-color: #f9f9f9;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.site-page .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.site-page .dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.site-page .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.site-page .dropdown-active {
+    font-weight: bold;
+    background-color: lightgray;
+}
+
+/* ── Post styling ── */
+.site-page .post {
+    background-color: white;
+    border: 2px solid #c74402;
+    border-radius: 10px;
+    margin: 10px;
+    text-align: left;
+}
+
+.site-page .search_bar {
+    width: 750px;
+    height: 30px;
+    display: inline-block;
+    font-size: 20px;
+    border-radius: 3px;
+    border: 2px solid #c74402;
+}
+
+.site-page .search_bar:hover {
+    background-color: #ddd;
+}
+
+.site-page .fa.fa-search {
+    font-size: 28px;
+}
+
+.site-page h3 {
+    font-size: 25px;
+}
+
+.site-page h5:first-of-type {
+    font-style: italic;
+}
+
+.site-page .btnContainer {
+    margin: 5px;
+}
+
+/* ── Post form styling ── */
+.site-page #postForm input {
+    width: 500px;
+    height: 25px;
+    display: block;
+    font-size: 16px;
+}
+
+.site-page #postForm textarea {
+    resize: none;
+    width: 500px;
+    height: 250px;
+    display: block;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.site-page main button {
+    margin: 5px;
+    width: 100px;
+    color: black;
+    background-color: #f56d36;
+    font-size: 18px;
+    font-weight: bold;
+    border: black solid 1px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    transition: background 300ms ease-in-out;
+}
+
+.site-page main button:hover {
+    background-color: #f2875c;
+}
+
+.site-page #postForm {
+    text-align: left;
+    font-size: 20px;
+    display: flex;
+}
+
+.site-page #postForm input,
+.site-page #postForm textarea {
+    font-size: 20px;
+    border-radius: 5px;
+    display: block;
+    width: 95%;
+    padding: 10px;
+    margin: 0 5px;
+    border: 2px solid #c74402;
+}
+
+.site-page #postForm input:hover,
+.site-page #postForm textarea:hover {
+    background-color: #ddd;
+}
+
+.site-page #postForm label {
+    display: block;
+    width: 100%;
+    margin: 1%;
+}
+
+.site-page fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto 2%;
+    width: 100%;
+    border: solid 3px #c74402;
+    border-radius: 5px;
+}
+
+.site-page legend {
+    padding: 5px;
+    font-size: larger;
+    word-spacing: 4px;
+}
+
+.site-page #postForm button[type=submit] {
+    margin: 2% 40%;
+    min-width: 150px;
+    border: 2px solid #c74402;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #f56d36;
+    color: black;
+    padding: 6px 10px;
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: uppercase;
+    transition: background 300ms ease-in-out;
+}
+
+.site-page #postForm button[type=submit]:hover {
+    background-color: #f2875c;
+}

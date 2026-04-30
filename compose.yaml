@@ -1,0 +1,90 @@
+# ========================================
+# Docker Compose Configuration
+# Modern Node.js Blog Application
+# ========================================
+
+services:
+  # ========================================
+  # Development Service
+  # ========================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: blogapp-dev-tacita
+    ports:
+      - '3010:3000' # API server
+
+    # Load variables from .env file into the container
+    env_file:
+      - .env
+
+    environment:
+      NODE_ENV: development
+      DOCKER_ENV: 'true'
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: blogapp
+      POSTGRES_USER: blogapp
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-blogapp_password}'
+      ALLOWED_ORIGINS: '${ALLOWED_ORIGINS:-http://localhost:3010,http://localhost:5173}'
+      # Pass Stripe keys from .env into the container explicitly
+      STRIPE_SECRET_KEY: '${STRIPE_SECRET_KEY}'
+      STRIPE_PUBLISHABLE_KEY: '${STRIPE_PUBLISHABLE_KEY}'
+      APP_URL: '${APP_URL:-http://localhost:3010}'
+
+    volumes:
+       - ./:/usr/src/app/
+      # node_modules workaround for volumes
+      # https://stackoverflow.com/a/32785014
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    restart: unless-stopped
+    networks:
+      - blogapp-network
+
+
+
+  # ========================================
+  # PostgreSQL Database Service
+  # ========================================
+  db:
+    image: postgres:18-alpine
+    container_name: blogapp-db_tacita
+    environment:
+      POSTGRES_DB: '${POSTGRES_DB:-blogapp}'
+      POSTGRES_USER: '${POSTGRES_USER:-blogapp}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-blogapp_password}'
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    ports:
+      - '${DB_PORT:-5436}:5432'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-blogapp} -d ${POSTGRES_DB:-blogapp}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - blogapp-network
+
+# ========================================
+# Volume Configuration
+# ========================================
+volumes:
+  postgres_data:
+    name: blogapp-postgres-data-tacita
+    driver: local
+
+# ========================================
+# Network Configuration
+# ========================================
+networks:
+  blogapp-network:
+    name: blogapp-network_t
+    driver: bridge

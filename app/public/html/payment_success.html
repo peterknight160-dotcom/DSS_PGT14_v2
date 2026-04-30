@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Executive Insights — Payment Successful</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="../imgs/foodie.ico">
+        <link rel="stylesheet" href="../css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+        <style>
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+            body { min-height: 100vh; font-family: 'DM Sans', sans-serif; background-color: #f0f2f7; color: #131c2e; display: flex; flex-direction: column; }
+            header { background-color: #131c2e; padding: 0 2.5rem; height: 70px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e2a3d; }
+            .header-left { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+            .brand-icon { width: 30px; height: 30px; border: 1px solid #7a9cc4; display: flex; align-items: center; justify-content: center; }
+            .brand-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: #d6e4f5; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+            main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
+            .card { background: #fff; border: 1px solid #c4d0de; max-width: 500px; width: 100%; text-align: center; padding: 3.5rem 3rem; position: relative; overflow: hidden; }
+            .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #2a6e3f; }
+            .icon-circle { width: 64px; height: 64px; border-radius: 50%; background: #eef5e8; border: 1px solid #b0d4a0; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+            .card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #2a6e3f; margin-bottom: 0.5rem; }
+            .card-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; color: #131c2e; margin-bottom: 0.8rem; }
+            .card-desc { font-size: 14px; color: #7a8a9a; line-height: 1.7; margin-bottom: 2rem; }
+            .btn { display: inline-block; padding: 0.8rem 2rem; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #f0f2f7; background: #131c2e; text-decoration: none; transition: background 0.2s; }
+            .btn:hover { background: #4a7aab; }
+            footer { background-color: #131c2e; border-top: 1px solid #1e2a3d; padding: 1.5rem 2.5rem; text-align: center; font-size: 12px; color: #3d4f66; }
+        </style>
+    </head>
+    <body>
+        <header>
+            <a class="header-left" href="../html/index.html">
+                <div class="brand-icon">
+                    <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                        <rect x="1" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="1" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="1" y="10" width="7" height="7" stroke="#7a9cc4" stroke-width="1"/>
+                        <rect x="10" y="10" width="7" height="7" fill="#7a9cc4"/>
+                    </svg>
+                </div>
+                <span class="brand-name">Executive Insights</span>
+            </a>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="icon-circle">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <path d="M6 14l5.5 5.5L22 8" stroke="#2a6e3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-label">Payment confirmed</div>
+                <div class="card-title">Thank you!</div>
+                <p class="card-desc">Your payment was successful and your membership is now active. You have full access to all executive posts and content.</p>
+                <a class="btn" href="../html/index.html">Go to dashboard</a>
+            </div>
+        </main>
+
+        <footer>&copy; Executive Insights. All rights reserved.</footer>
+    </body>
+</html>
