@@ -6,7 +6,7 @@ const pgp = require('pg-promise')();
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const session = require('express-session');
-const { authenticateUser, checkContributor } = require('./authorizeuser.js');
+const { authenticateUser } = require('./authorizeuser.js');
 const { getPosts } = require('./getposts.js');
 const { get } = require('http');
 const https = require('https');
@@ -41,7 +41,7 @@ app.use(
     cookie: {
       maxAge: 3600000,
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "lax"
     },
     resave: false,
@@ -302,8 +302,8 @@ app.post('/register-checkout', async (req, res) => {
         role:          plan.role,
         plan:          planKey
       },
-      success_url: `${process.env.APP_URL || 'http://localhost:3000'}/register-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${process.env.APP_URL || 'http://localhost:3000'}/register-cancel`,
+      success_url: `${process.env.APP_URL || 'https://localhost:3000'}/register-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${process.env.APP_URL || 'https://localhost:3000'}/register-cancel`,
     });
 
     res.json({ url: session.url });
@@ -506,8 +506,8 @@ app.post('/create-checkout-session', authenticateUser, async (req, res) => {
       payment_method_types: ['card'],
       customer_email: req.session.user.username.includes('@') ? req.session.user.username : undefined,
       metadata: { username: req.session.user.username, plan: planKey },
-      success_url: `${process.env.APP_URL || 'http://localhost:3000'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${process.env.APP_URL || 'http://localhost:3000'}/payment-cancel`,
+      success_url: `${process.env.APP_URL || 'https://localhost:3000'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${process.env.APP_URL || 'https://localhost:3000'}/payment-cancel`,
     };
     if (plan.mode === 'subscription') {
       const price = await stripe.prices.create({
@@ -564,6 +564,18 @@ app.use((req, res, next) => {
   next();
 });
 
-const server = app.listen(port, () => {
-  console.log(`My app listening on port ${port}!`);
+//app only runs if run directly, needed for test files
+if (require.main === module) {
+const sslOptions = {
+key: fs.readFileSync(__dirname + '/../certs/localhost-key-pem'),
+cert: fs.readFileSync(__dirname + '/../certs/localhost-cert.pem'),
+};
+
+// Main HTTPS server
+https.createServer(sslOptions, app).listen(port, () => {
+console.log('HTTPS app listening on port ' + port);
 });
+
+}
+
+module.exports = app;

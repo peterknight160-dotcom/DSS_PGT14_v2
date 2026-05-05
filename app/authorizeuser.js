@@ -7,13 +7,14 @@ function authenticateUser(req, res, next){
     }
 }
 
-function checkContributor(req, res, next){
-    //checks role if user exists
-    if (req.session.user?.role === 'CONTRIBUTOR'){
-        return next();
-    } else{
-        res.status(403).send('You are not authenticated to view this page.')
-    }
-}
+// not currently being used, kept in case needed
+// function checkContributor(req, res, next){
+//     //checks role if user exists
+//     if (req.session.user?.role === 'CONTRIBUTOR'){
+//         return next();
+//     } else{
+//         res.status(403).send('You are not authenticated to view this page.')
+//     }
+// }
 
-module.exports = { authenticateUser, checkContributor }
+module.exports = { authenticateUser }
